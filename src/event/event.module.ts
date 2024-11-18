@@ -10,16 +10,16 @@ import { extname } from 'path';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Event]),
-  // MulterModule.register({
-  //   storage: diskStorage({
-  //     destination: './uploads', // Folder to store files
-  //     filename: (req, file, callback) => {
-  //       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-  //       const ext = extname(file.originalname);
-  //       callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-  //     },
-  //   }),
-  // }),
+  MulterModule.register({
+    storage: diskStorage({
+      destination: './uploads', // Folder to store files
+      filename: (req, file, callback) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = extname(file.originalname);
+        callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+      },
+    }),
+  }),
 ],
   providers: [EventService, {
     provide: 'APP_PIPE',

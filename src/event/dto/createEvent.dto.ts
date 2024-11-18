@@ -7,9 +7,12 @@ export class CreateEventDto {
     title: string;
     @IsString({message: "Description must be a string"})
     description: string;
-    image: File;
     @IsString({message: "Address must be a string"})
     address: string;
     @IsString({message: "Date must be a string"})
-    date?: string
+    startDate?: string;
+    @IsString({message: "Date must be a string"})
+    endDate?: string;
 }
+
+

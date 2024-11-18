@@ -5,10 +5,10 @@ export class UpdateEventDto {
     title: string;
     @IsString({message:"Description must be a string"})
     description: string;
-    @IsString({message:"Image must be a string"})
-    image: string;
     @IsString({message:"Address must be a string"})
     address: string;
     @IsString({message:"Date must be a string"})
-    date: string
+    startDate: string;
+    @IsString({message:"Date must be a string"})
+    endDate: string
 }

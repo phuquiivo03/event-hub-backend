@@ -1,4 +1,5 @@
 import { UploadedFile } from "@nestjs/common";
+import { isString } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -9,9 +10,12 @@ export class Event {
     title: string;
     @Column()
     description: string;
-    image: File;
+    @Column()
+    image: string;
     @Column()
     address: string;
     @Column()
-    date: string;
+    startDate: string;
+    @Column()
+    endDate: string;
 }

@@ -7,6 +7,7 @@ import { EventModule } from './event/event.module';
 import dbConfig from './config/db.config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -14,6 +15,7 @@ import { join } from 'path';
       useFactory: dbConfig
     }),
     EventModule,
+    UserModule,
     // ServeStaticModule.forRoot({
     //   rootPath: join(__dirname, '..', 'uploads'), // Path to your upload folder
     //   serveRoot: '/uploads', // Serve files under this route

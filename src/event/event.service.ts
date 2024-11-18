@@ -4,14 +4,19 @@ import { Repository, UpdateEvent } from 'typeorm';
 import { Event } from 'src/entity/event.entity';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
+import { uploadImage } from 'src/util/uploadFile';
+import { PaginationDTO } from './dto/pagination.dto';
 
 @Injectable()
 export class EventService {
     constructor(
         @InjectRepository(Event)
         private readonly propertyRepo: Repository<Event>) {}
-    async getEvents() {
-        return await this.propertyRepo.find();
+    async getEvents(pagination: PaginationDTO) {
+        return await this.propertyRepo.find({
+            skip: pagination.skip,
+            take: pagination.take || parseInt(process.env.default_pagination_limit)
+        });
     }
 
     async getEventById(id: number) {
@@ -46,10 +51,13 @@ export class EventService {
     }
 
 
-    async  createEvent(event: CreateEventDto) {
+    async  createEvent(event: CreateEventDto, file: Express.Multer.File) {
+        const fileUrl = await uploadImage(file);
+        const newEvent = {...event, image: fileUrl};
+        console.log('fileUrl', fileUrl);
         try {
-            const newEvent = this.propertyRepo.create(event);
-            await this.propertyRepo.save(newEvent);
+            const createEvent = this.propertyRepo.create(newEvent);
+            await this.propertyRepo.save(createEvent);
             return  {message: 'Event created', status: 200, createdAt: new Date()};
         }catch(e) {
             return e.message;

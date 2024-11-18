@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
+import { uploadImage } from 'src/util/uploadFile';
+import { PaginationDTO } from './dto/pagination.dto';
 
 @Controller('event')
 export class EventController {
@@ -10,8 +12,8 @@ export class EventController {
     
     @Get()
     @UsePipes()
-    getEvents() {
-        return  this.eventService.getEvents();
+    getEvents(@Query() pagination: PaginationDTO) {
+        return  this.eventService.getEvents(pagination);
     }
 
     @Get(':id')
@@ -24,8 +26,9 @@ export class EventController {
     @UsePipes()
     @UseInterceptors(FileInterceptor('image', {}))
     createEvent(@Body() body: CreateEventDto, @UploadedFile() file: Express.Multer.File) {
-        console.log('file bufer:', file);
-        return  this.eventService.createEvent(body);  
+        console.log('file', file);
+      
+        return  this.eventService.createEvent(body, file);  
     }
 
     @Patch(':id')

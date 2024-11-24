@@ -6,10 +6,11 @@ import { Event } from 'src/entity/event.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { User } from 'src/user/entities/user.entity';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Event]),
+  imports: [TypeOrmModule.forFeature([Event, User]),
   MulterModule.register({
     storage: diskStorage({
       destination: './uploads', // Folder to store files

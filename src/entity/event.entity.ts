@@ -1,6 +1,7 @@
 import { UploadedFile } from "@nestjs/common";
 import { isString } from "class-validator";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Event {
@@ -13,9 +14,22 @@ export class Event {
     @Column()
     image: string;
     @Column()
-    address: string;
+    location: string;
     @Column()
     startDate: string;
     @Column()
     endDate: string;
+    @Column()
+    private: boolean;
+    @Column()
+    capacity: number;
+
+    @ManyToOne(() => User, user => user.userName)
+    owner: User;
+
+    @ManyToMany(() => User, user => user.contributedEvents)
+    contributors: User[];
+
+    @ManyToMany(() => User, user => user.markedEvents)
+    markedUsers: User[];
 }

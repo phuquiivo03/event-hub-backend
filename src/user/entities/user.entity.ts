@@ -1,5 +1,6 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import * as bscryt from 'bcrypt';
+import { Event } from "src/entity/event.entity";
 
 @Entity()
 export class User {
@@ -24,4 +25,16 @@ export class User {
     async hashPassword() {
         this.password = await bscryt.hash(this.password, 10);
     }
+    
+    @OneToMany(() => Event, event => event.owner)
+    events: Event[];
+
+    @ManyToMany(() => Event, event => event.contributors)
+    @JoinTable({name: 'contributed_events'})
+    contributedEvents: Event[];
+
+
+    @ManyToMany(() => Event, event => event.markedUsers)
+    @JoinTable({name: 'marked_events'})
+    markedEvents: Event[];
 }

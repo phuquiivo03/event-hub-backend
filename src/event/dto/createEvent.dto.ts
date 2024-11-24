@@ -1,4 +1,4 @@
-import { IsString, Length } from "class-validator"
+import { IsBoolean, IsNumber, IsString, Length } from "class-validator"
 
 export class CreateEventDto {
     
@@ -8,11 +8,17 @@ export class CreateEventDto {
     @IsString({message: "Description must be a string"})
     description: string;
     @IsString({message: "Address must be a string"})
-    address: string;
+    location: string;
     @IsString({message: "Date must be a string"})
     startDate?: string;
     @IsString({message: "Date must be a string"})
     endDate?: string;
+    @IsBoolean({message: "Date must be a boolean"})
+    private: boolean;
+    @IsNumber()
+    capacity: number;
+    @IsString({message: "Image must be a string"})
+    contributors: string;
 }
 
 

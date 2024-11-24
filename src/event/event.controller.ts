@@ -3,7 +3,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
-import { uploadImage } from 'src/util/uploadFile';
 import { PaginationDTO } from './dto/pagination.dto';
 
 @Controller('event')
@@ -26,7 +25,6 @@ export class EventController {
     @UsePipes()
     @UseInterceptors(FileInterceptor('image', {}))
     createEvent(@Body() body: CreateEventDto, @UploadedFile() file: Express.Multer.File) {
-        console.log('file', file);
       
         return  this.eventService.createEvent(body, file);  
     }
@@ -43,4 +41,10 @@ export class EventController {
         return this.eventService.deleteEvent(id);
     }
 
+    @Post('mark')
+    @UsePipes()
+    markEvent(@Query() data: {eventId: number, username: string}) {
+        console.log(data);
+        return this.eventService.markEvent(data.username, data.eventId);
+    }
 }
